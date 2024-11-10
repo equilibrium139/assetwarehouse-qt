@@ -1,0 +1,9 @@
+# ninja log v5
+6	427	7529672510220230	assetwarehouse-qt_autogen/timestamp	c0e7144e6b43cf84
+6	427	7529672510220230	assetwarehouse-qt_autogen/mocs_compilation.cpp	c0e7144e6b43cf84
+6	427	7529672510220230	C:/dev/assetwarehouse-qt/build/Desktop_Qt_6_8_0_MSVC2022_64bit-Debug/assetwarehouse-qt_autogen/timestamp	c0e7144e6b43cf84
+6	427	7529672510220230	C:/dev/assetwarehouse-qt/build/Desktop_Qt_6_8_0_MSVC2022_64bit-Debug/assetwarehouse-qt_autogen/mocs_compilation.cpp	c0e7144e6b43cf84
+428	2023	7529672527532984	CMakeFiles/assetwarehouse-qt.dir/assetwarehouse-qt_autogen/mocs_compilation.cpp.obj	947c603ac290c7e3
+430	2047	7529672527764400	CMakeFiles/assetwarehouse-qt.dir/main.cpp.obj	6ab9ec20ae4d671
+433	2066	7529672527954396	CMakeFiles/assetwarehouse-qt.dir/mainwindow.cpp.obj	55aaa26b51046b3d
+2066	2283	7529672530023474	assetwarehouse-qt.exe	d4c41ed1c1f29f5c
