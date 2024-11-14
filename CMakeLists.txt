@@ -23,6 +23,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(assetwarehouse-qt
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        thumbnailwidget.h thumbnailwidget.cpp thumbnailwidget.ui
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET assetwarehouse-qt APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
