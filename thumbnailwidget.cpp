@@ -12,9 +12,8 @@ ThumbnailWidget::ThumbnailWidget(QWidget *parent)
     ui->setupUi(this);
 }
 
-void ThumbnailWidget::setThumbnailData(const ThumbnailData& data) {
-    QNetworkRequest request{QUrl(data.imageUrl)};
-    QNetworkReply* response = networkManager->get(request);
+void ThumbnailWidget::setThumbnailData(const Asset& asset) {
+    QNetworkReply* response = NetworkManager::getThumbnail(asset);
     connect(response, &QNetworkReply::finished, this, [response, this]() {
         if (response->error() == QNetworkReply::NoError) {
             QByteArray data = response->readAll();
@@ -22,10 +21,10 @@ void ThumbnailWidget::setThumbnailData(const ThumbnailData& data) {
             ui->thumbnailLabel->setPixmap(QPixmap::fromImage(image));
         }
     });
-    ui->nameLabel->setText(data.name);
-    ui->descriptionLabel->setText(data.description);
-    ui->dateLabel->setText(data.date.toString("yyyy-MM-dd"));
-    ui->creatorLabel->setText(data.creator);
+    ui->nameLabel->setText(asset.name);
+    ui->descriptionLabel->setText(asset.description);
+    ui->dateLabel->setText(asset.createdAt.toString("yyyy-MM-dd"));
+    ui->creatorLabel->setText(asset.username);
 }
 
 ThumbnailWidget::~ThumbnailWidget()

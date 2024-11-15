@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
+#include "thumbnailwidget.h"
+
 #include <QGridLayout>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -37,31 +39,14 @@ MainWindow::MainWindow(QWidget *parent)
             QJsonDocument json = QJsonDocument::fromJson(data);
             QJsonArray array = json.array();
             int assetCount = array.count();
-            thumbnailData.reserve(assetCount);
+            galleryAssets.reserve(assetCount);
+            const int columns = 3;
             for (int i = 0; i < assetCount; i++) {
                 QJsonValue value = array[i];
                 QJsonObject object = value.toObject();
-                QString name = object.value("name").toString();
-                QString description = object.value("description").toString();
-                QString creator = object.value("username").toString();
-                QString dateStr = object.value("created_at").toString();
-                QDateTime date = QDateTime::fromString(dateStr, Qt::ISODateWithMs);
-                QDateTime localDate = date.toLocalTime();
-                QString thumbnailUrl = object.value("thumbnail_url").toString();
-                int creatorID = object.value("created_by").toInt();
-                QString creatorIDStr = QString::number(creatorID);
-                thumbnailUrl = "https://assetwarehouse.nyc3.digitaloceanspaces.com/thumbnails/" + creatorIDStr + "/" + thumbnailUrl;
-                qInfo() << thumbnailUrl;
-                const int columns = 3;
-                thumbnailData.push_back({
-                    thumbnailUrl,
-                    name,
-                    description,
-                    creator,
-                    localDate
-                });
+                galleryAssets.push_back(object);
                 ThumbnailWidget* tw = new ThumbnailWidget();
-                tw->setThumbnailData(thumbnailData.back());
+                tw->setThumbnailData(galleryAssets.back());
                 int row = i / columns;
                 int col = i % columns;
                 scrollAreaLayout->addWidget(tw, row, col);

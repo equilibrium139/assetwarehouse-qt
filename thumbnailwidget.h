@@ -6,19 +6,12 @@
 #include <QString>
 #include <QWidget>
 
+#include "asset.h"
 #include "networkmanager.h"
 
 namespace Ui {
 class ThumbnailWidget;
 }
-
-struct ThumbnailData {
-    QString imageUrl;
-    QString name;
-    QString description;
-    QString creator;
-    QDateTime date;
-};
 
 class ThumbnailWidget : public QWidget
 {
@@ -28,7 +21,7 @@ public:
     explicit ThumbnailWidget(QWidget *parent = nullptr);
     ~ThumbnailWidget();
 
-    void setThumbnailData(const ThumbnailData& data);
+    void setThumbnailData(const Asset& asset);
 
 private:
     Ui::ThumbnailWidget *ui;
