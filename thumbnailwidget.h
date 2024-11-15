@@ -6,12 +6,14 @@
 #include <QString>
 #include <QWidget>
 
+#include "networkmanager.h"
+
 namespace Ui {
 class ThumbnailWidget;
 }
 
 struct ThumbnailData {
-    QPixmap image;
+    QString imageUrl;
     QString name;
     QString description;
     QString creator;
@@ -28,10 +30,9 @@ public:
 
     void setThumbnailData(const ThumbnailData& data);
 
-protected:
-
 private:
     Ui::ThumbnailWidget *ui;
+    QNetworkAccessManager* networkManager = NetworkManager::instance();
 };
 
 #endif // THUMBNAILWIDGET_H

@@ -2,7 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QNetworkAccessManager>
+#include "networkmanager.h"
+#include "thumbnailwidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -20,7 +21,8 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    QNetworkAccessManager* networkManager;
+    QNetworkAccessManager* networkManager = NetworkManager::instance();
+    std::vector<ThumbnailData> thumbnailData;
 
 };
 #endif // MAINWINDOW_H
