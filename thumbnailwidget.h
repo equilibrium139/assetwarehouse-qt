@@ -7,6 +7,7 @@
 #include <QWidget>
 
 #include "asset.h"
+#include "clickablelabel.h"
 #include "networkmanager.h"
 
 namespace Ui {
@@ -20,12 +21,16 @@ class ThumbnailWidget : public QWidget
 public:
     explicit ThumbnailWidget(QWidget *parent = nullptr);
     ~ThumbnailWidget();
-
     void setThumbnailData(const Asset& asset);
+
+private slots:
+    void onThumbnailClicked();
 
 private:
     Ui::ThumbnailWidget *ui;
     QNetworkAccessManager* networkManager = NetworkManager::instance();
+    ClickableLabel* thumbnailLabel;
+    const Asset* asset = nullptr;
 };
 
 #endif // THUMBNAILWIDGET_H

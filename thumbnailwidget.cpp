@@ -10,9 +10,12 @@ ThumbnailWidget::ThumbnailWidget(QWidget *parent)
     , ui(new Ui::ThumbnailWidget)
 {
     ui->setupUi(this);
+    thumbnailLabel = ui->thumbnailLabel;
+    connect(thumbnailLabel, &ClickableLabel::clicked, this, &ThumbnailWidget::onThumbnailClicked);
 }
 
 void ThumbnailWidget::setThumbnailData(const Asset& asset) {
+    this->asset = &asset;
     ui->nameLabel->setText(asset.name);
     ui->descriptionLabel->setText(asset.description);
     ui->dateLabel->setText(asset.createdAt.toString("yyyy-MM-dd"));
@@ -25,6 +28,10 @@ void ThumbnailWidget::setThumbnailData(const Asset& asset) {
             ui->thumbnailLabel->setPixmap(QPixmap::fromImage(image));
         }
     });
+}
+
+void ThumbnailWidget::onThumbnailClicked() {
+    if (asset) qInfo() << asset->name;
 }
 
 ThumbnailWidget::~ThumbnailWidget()
