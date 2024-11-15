@@ -2,12 +2,13 @@
 #include "./ui_mainwindow.h"
 
 #include <QGridLayout>
+#include <QNetworkReply>
 #include <QScrollArea>
 #include "thumbnailwidget.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::MainWindow), networkManager(new QNetworkAccessManager)
 {
     ui->setupUi(this);
 
@@ -25,6 +26,18 @@ MainWindow::MainWindow(QWidget *parent)
     QGridLayout* scrollAreaLayout = new QGridLayout(scrollWidget);
     scrollAreaLayout->setHorizontalSpacing(0);
     qInfo() << scrollWidget->size();
+
+    QNetworkRequest request(QUrl("https://assetwarehouse-backend-delta.vercel.app/api/assets/popular/50"));
+    QNetworkReply* response = networkManager->get(request);
+    connect(response, &QNetworkReply::finished, this, [=]() {
+        if (response->error() == QNetworkReply::NoError) {
+            QByteArray data = response->readAll();
+            qInfo() << data;
+        } else {
+            qCritical() << "Error fetching assets: " << response->errorString();
+        }
+    });
+    qInfo() << response->isFinished();
 
     std::vector<ThumbnailData> dummyData;
     dummyData.push_back({
