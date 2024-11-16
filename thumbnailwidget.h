@@ -23,6 +23,9 @@ public:
     ~ThumbnailWidget();
     void setThumbnailData(const Asset& asset);
 
+signals:
+    void clicked(const Asset& asset);
+
 private slots:
     void onThumbnailClicked();
 

@@ -31,7 +31,8 @@ void ThumbnailWidget::setThumbnailData(const Asset& asset) {
 }
 
 void ThumbnailWidget::onThumbnailClicked() {
-    if (asset) qInfo() << asset->name;
+    assert(asset);
+    emit clicked(*asset);
 }
 
 ThumbnailWidget::~ThumbnailWidget()

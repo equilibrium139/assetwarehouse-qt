@@ -19,6 +19,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void onAssetClicked(const Asset& asset);
+
 private:
     Ui::MainWindow *ui;
     QNetworkAccessManager* networkManager = NetworkManager::instance();

@@ -1,8 +1,10 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
+#include "assetviewer.h"
 #include "thumbnailwidget.h"
 
+#include <QDialog>
 #include <QGridLayout>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -47,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent)
                 galleryAssets.push_back(object);
                 ThumbnailWidget* tw = new ThumbnailWidget();
                 tw->setThumbnailData(galleryAssets.back());
+                connect(tw, &ThumbnailWidget::clicked, this, &MainWindow::onAssetClicked);
                 int row = i / columns;
                 int col = i % columns;
                 scrollAreaLayout->addWidget(tw, row, col);
@@ -55,8 +58,20 @@ MainWindow::MainWindow(QWidget *parent)
             qCritical() << "Error fetching assets: " << response->errorString();
         }
     });
+}
 
+void MainWindow::onAssetClicked(const Asset& asset) {
+    QDialog* dialog = new QDialog(nullptr);
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->setWindowTitle("Asset Viewer");
 
+    AssetViewer* viewer = new AssetViewer;
+
+    QVBoxLayout* layout = new QVBoxLayout(dialog);
+    layout->addWidget(viewer);
+
+    dialog->resize(800, 600);
+    dialog->show();
 }
 
 MainWindow::~MainWindow()
