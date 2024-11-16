@@ -2,9 +2,9 @@
 #define ASSETVIEWER_H
 
 #include <QOpenGLWidget>
-#include <QOpenGLFunctions>
+#include <qopenglfunctions_4_5_core.h>
 
-class AssetViewer : public QOpenGLWidget, protected QOpenGLFunctions
+class AssetViewer : public QOpenGLWidget, protected QOpenGLFunctions_4_5_Core
 {
     Q_OBJECT
 
