@@ -49,6 +49,7 @@ else()
     endif()
 endif()
 
+target_include_directories(assetwarehouse-qt PRIVATE "${CMAKE_SOURCE_DIR}/external")
 target_link_libraries(assetwarehouse-qt PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::OpenGLWidgets
                                                 )
 
