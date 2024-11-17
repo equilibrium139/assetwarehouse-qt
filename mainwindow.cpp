@@ -65,10 +65,12 @@ void MainWindow::onAssetClicked(const Asset& asset) {
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->setWindowTitle("Asset Viewer");
 
-    AssetViewer* viewer = new AssetViewer;
+    AssetViewer* viewer = new AssetViewer(dialog);
 
     QVBoxLayout* layout = new QVBoxLayout(dialog);
     layout->addWidget(viewer);
+    viewer->setFocusPolicy(Qt::StrongFocus);
+    viewer->setFocus();
 
     dialog->resize(800, 600);
     dialog->show();

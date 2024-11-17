@@ -1,6 +1,15 @@
 #include "assetviewer.h"
 
-AssetViewer::AssetViewer(QWidget* parent) {}
+#include <QTimer>
+#include <glm/gtc/type_ptr.hpp>
+
+AssetViewer::AssetViewer(QWidget* parent): QOpenGLWidget(parent) {
+    QTimer* updateTimer = new QTimer(this);
+    connect(updateTimer, &QTimer::timeout, this, &AssetViewer::updateScene);
+    frameTimer.start();
+    updateTimer->start(updatePeriodMS);
+    camera.position.z = 3.0f;
+}
 
 void AssetViewer::initializeGL() {
     initializeOpenGLFunctions();
@@ -9,6 +18,56 @@ void AssetViewer::initializeGL() {
 
 void AssetViewer::resizeGL(int w, int h) {
     glViewport(0, 0, w, h);
+}
+
+void AssetViewer::keyPressEvent(QKeyEvent* event) {
+    qInfo() << "Key pressed";
+    switch (event->key()) {
+    case Qt::Key_W:
+        qInfo() << "Moving forward";
+        camera.ProcessKeyboard(Camera_Movement::CAM_FORWARD, deltaTimeSeconds);
+        break;
+    case Qt::Key_S:
+        camera.ProcessKeyboard(Camera_Movement::CAM_BACKWARD, deltaTimeSeconds);
+        break;
+    case Qt::Key_A:
+        camera.ProcessKeyboard(Camera_Movement::CAM_LEFT, deltaTimeSeconds);
+        break;
+    case Qt::Key_D:
+        camera.ProcessKeyboard(Camera_Movement::CAM_RIGHT, deltaTimeSeconds);
+        break;
+    default:
+        QOpenGLWidget::keyPressEvent(event);
+    }
+}
+
+void AssetViewer::mousePressEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton) {
+        leftMousePressed = true;
+        lastMousePosition = event->pos();
+    }
+}
+
+void AssetViewer::mouseReleaseEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton) {
+        leftMousePressed = false;
+    }
+}
+
+void AssetViewer::mouseMoveEvent(QMouseEvent* event) {
+    if (leftMousePressed) {
+        QPoint currentMousePosition = event->pos();
+        QPoint delta = currentMousePosition - lastMousePosition;
+        qInfo() << delta;
+        camera.ProcessMouseMovement(delta.x(), -delta.y());
+        lastMousePosition = currentMousePosition;
+    }
+}
+
+void AssetViewer::updateScene() {
+    qint64 frameTimeMS = frameTimer.restart();
+    deltaTimeSeconds = frameTimeMS / 1000.0f;
+    update();
 }
 
 void AssetViewer::paintGL() {
@@ -42,9 +101,11 @@ layout(location = 1) in vec3 aColor;
 
 out vec3 color;
 
+uniform mat4 mvp;
+
 void main() {
     color = aColor;
-    gl_Position = vec4(aPosition, 1.0);
+    gl_Position = mvp * vec4(aPosition, 1.0);
 }
 )";
 
@@ -72,6 +133,10 @@ void main() {
     glAttachShader(shader, fs);
     glLinkProgram(shader);
     glUseProgram(shader);
+
+    glm::mat4 mvp = camera.GetProjectionMatrix() * camera.GetViewMatrix();
+    int mvpLocation = glGetUniformLocation(shader, "mvp");
+    glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(mvp));
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }
