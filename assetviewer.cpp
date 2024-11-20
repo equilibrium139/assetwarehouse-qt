@@ -21,52 +21,94 @@ void AssetViewer::resizeGL(int w, int h) {
 }
 
 void AssetViewer::keyPressEvent(QKeyEvent* event) {
-    qInfo() << "Key pressed";
     switch (event->key()) {
     case Qt::Key_W:
-        qInfo() << "Moving forward";
-        camera.ProcessKeyboard(Camera_Movement::CAM_FORWARD, deltaTimeSeconds);
+        input.wPressed = true;
         break;
     case Qt::Key_S:
-        camera.ProcessKeyboard(Camera_Movement::CAM_BACKWARD, deltaTimeSeconds);
+        input.sPressed = true;
         break;
     case Qt::Key_A:
-        camera.ProcessKeyboard(Camera_Movement::CAM_LEFT, deltaTimeSeconds);
+        input.aPressed = true;
         break;
     case Qt::Key_D:
-        camera.ProcessKeyboard(Camera_Movement::CAM_RIGHT, deltaTimeSeconds);
+        input.dPressed = true;
         break;
     default:
         QOpenGLWidget::keyPressEvent(event);
     }
 }
 
+void AssetViewer::keyReleaseEvent(QKeyEvent* event) {
+    switch (event->key()) {
+    case Qt::Key_W:
+        input.wPressed = false;
+        break;
+    case Qt::Key_S:
+        input.sPressed = false;
+        break;
+    case Qt::Key_A:
+        input.aPressed = false;
+        break;
+    case Qt::Key_D:
+        input.dPressed = false;
+        break;
+    default:
+        QOpenGLWidget::keyReleaseEvent(event);
+    }
+}
+
 void AssetViewer::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
-        leftMousePressed = true;
-        lastMousePosition = event->pos();
+        input.leftMousePressed = true;
+        QPoint mousePos = event->pos();
+        input.mouseX = mousePos.x();
+        input.mouseY = mousePos.y();
+        input.mouseDeltaX = 0.0f;
+        input.mouseDeltaY = 0.0f;
     }
 }
 
 void AssetViewer::mouseReleaseEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
-        leftMousePressed = false;
+        input.leftMousePressed = false;
     }
 }
 
 void AssetViewer::mouseMoveEvent(QMouseEvent* event) {
-    if (leftMousePressed) {
+    if (input.leftMousePressed) {
         QPoint currentMousePosition = event->pos();
-        QPoint delta = currentMousePosition - lastMousePosition;
-        qInfo() << delta;
-        camera.ProcessMouseMovement(delta.x(), -delta.y());
-        lastMousePosition = currentMousePosition;
+        float currentX = currentMousePosition.x();
+        float currentY = currentMousePosition.y();
+        input.mouseDeltaX = currentX - input.mouseX;
+        input.mouseDeltaY = input.mouseY - currentY; // y axis is top down in screen space so subtraction is flipped
+        input.mouseX = currentX;
+        input.mouseY = currentY;
     }
 }
 
 void AssetViewer::updateScene() {
     qint64 frameTimeMS = frameTimer.restart();
     deltaTimeSeconds = frameTimeMS / 1000.0f;
+
+    if (input.wPressed) {
+        camera.ProcessKeyboard(Camera_Movement::CAM_FORWARD, deltaTimeSeconds);
+    }
+    if (input.sPressed) {
+        camera.ProcessKeyboard(Camera_Movement::CAM_BACKWARD, deltaTimeSeconds);
+    }
+    if (input.aPressed) {
+        camera.ProcessKeyboard(Camera_Movement::CAM_LEFT, deltaTimeSeconds);
+    }
+    if (input.dPressed) {
+        camera.ProcessKeyboard(Camera_Movement::CAM_RIGHT, deltaTimeSeconds);
+    }
+    if (input.leftMousePressed) {
+        camera.ProcessMouseMovement(input.mouseDeltaX, input.mouseDeltaY);
+    }
+
+    input.mouseDeltaX = input.mouseDeltaY = 0.0f;
+
     update();
 }
 

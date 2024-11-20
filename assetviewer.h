@@ -2,6 +2,7 @@
 #define ASSETVIEWER_H
 
 #include "camera.h"
+#include "input.h"
 #include <QElapsedTimer>
 #include <QKeyEvent>
 #include <QMouseEvent>
@@ -23,7 +24,7 @@ protected:
     void paintGL() override;
 
     void keyPressEvent(QKeyEvent* event) override;
-    // void keyReleaseEvent(QKeyEvent* event) override;
+    void keyReleaseEvent(QKeyEvent* event) override;
 
     void mousePressEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
@@ -33,10 +34,9 @@ protected:
 private:
     void updateScene();
     Camera camera;
+    Input input{};
     int updatePeriodMS = 16; // doesn't guarantee fixed update, still have to calculate deltaTime
     float deltaTimeSeconds = 0.0f;
-    QPoint lastMousePosition;
-    bool leftMousePressed = false;
     QElapsedTimer frameTimer;
 };
 

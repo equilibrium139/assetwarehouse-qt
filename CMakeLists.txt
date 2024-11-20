@@ -30,6 +30,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         clickablelabel.h clickablelabel.cpp
         assetviewer.h assetviewer.cpp
         camera.h
+        input.h
 
 
     )
