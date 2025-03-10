@@ -7,9 +7,9 @@
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QOpenGLWidget>
-#include <qopenglfunctions_4_5_core.h>
+#include <qopenglfunctions_4_3_core.h>
 
-class AssetViewer : public QOpenGLWidget, protected QOpenGLFunctions_4_5_Core
+class AssetViewer : public QOpenGLWidget, protected QOpenGLFunctions_4_3_Core
 {
     Q_OBJECT
 

@@ -1,5 +1,4 @@
-#ifndef INPUT_H
-#define INPUT_H
+#pragma once
 
 struct Input
 {
@@ -7,7 +6,7 @@ struct Input
     float mouseY;
     float mouseDeltaX;
     float mouseDeltaY;
-
+    
     float deltaTime;
 
     int windowWidth, windowHeight;
@@ -15,5 +14,3 @@ struct Input
     bool wPressed, aPressed, sPressed, dPressed;
     bool leftMousePressed;
 };
-
-#endif // INPUT_H

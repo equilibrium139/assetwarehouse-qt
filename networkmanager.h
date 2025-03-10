@@ -9,6 +9,7 @@ class NetworkManager {
 public:
     static QNetworkAccessManager* instance();
     static QNetworkReply* getThumbnail(const Asset& asset);
+    static QNetworkReply* getModel(const Asset& asset);
 
 
 private:

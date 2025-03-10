@@ -6,7 +6,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Network OpenGLWidgets)
@@ -31,6 +31,11 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         assetviewer.h assetviewer.cpp
         camera.h
         input.h
+        scene.h
+        animation.h animation.cpp
+        entity.h
+        mesh.h mesh.cpp
+        animation.cpp animation.h BBox.h Framebuffer.cpp Framebuffer.h glad.cpp GLTFHelpers.cpp GLTFHelpers.h GLTFMeshParser.cpp GLTFMeshParser.h GLTFParser.cpp GLTFParser.h input.h Light.h mainwindow.cpp mainwindow.h mainwindow.ui mesh.cpp mesh.h mikktspace.cpp mikktspace.h PBRMaterial.cpp PBRMaterial.h scene.h Shader.cpp Shader.h Skeleton.h Texture.cpp Texture.h tiny_gltf.cpp Transform.cpp Transform.h VertexAttribute.h
 
 
     )

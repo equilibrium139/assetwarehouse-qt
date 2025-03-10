@@ -21,6 +21,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     QVBoxLayout* mainLayout = new QVBoxLayout(ui->centralwidget);
 
+    QOpenGLWidget* preloader = new QOpenGLWidget(this);
+    preloader->hide();
+
     QScrollArea* scrollArea = new QScrollArea(ui->centralwidget);
     scrollArea->setWidgetResizable(true);
     mainLayout->addWidget(scrollArea);
@@ -61,7 +64,7 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 void MainWindow::onAssetClicked(const Asset& asset) {
-    QDialog* dialog = new QDialog(nullptr);
+    QDialog* dialog = new QDialog(this);
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->setWindowTitle("Asset Viewer");
 
